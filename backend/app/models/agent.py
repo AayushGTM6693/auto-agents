@@ -18,20 +18,20 @@ class Agent(base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String(100), nullable=False, index=True)
     keywords = Column(Text, nullable=False)
-    newsSource = Column( String(200), nullable=True) #optional
-    checkInterval = Column(Integer, default=300)
-    isActive = Column(Boolean, index=True, Optional=True)
+    news_source = Column( String(200), nullable=True) #optional
+    check_interval = Column(Integer, default=300)
+    is_active = Column(Boolean, index=True, nullable=False)
     #timestamp
-    createdAt = Column( DateTime(timezone=True), server_default = func.now() )
-    updatedAt = Column(DateTime(timezone=True), onUpdate= func.now())
-    lastChecked = Column(DateTime(timezone=True), nullable=True)
+    created_at = Column( DateTime(timezone=True), server_default = func.now() )
+    updated_at = Column(DateTime(timezone=True), onUpdate= func.now())
+    last_checked = Column(DateTime(timezone=True), nullable=True)
+
 
     #relationship
     articles = relationship("article", back_populates="agent", cascade="all delete_orphan")
     #one agent -> multi article and backpopl->  Article model must have agent = relationship(...) too.
-
-    llmAnalyses = relationship("LLMAnalysis", back_populates="agent")
+    llm_analyses = relationship("LLMAnalysis", back_populates="agent")
     #one agent -> multi llm anaysis
 
     def __repr__(self):
-        return f"--AgentId ={self.agentid} name={self.name} active = {self.active}"
+        return f"--AgentId ={self.id} name={self.name} active = {self.is_active}"
